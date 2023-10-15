@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import ajax from '../../ajax'
 import './index.css'
 export default function ReactForm() {
     const [isGet, setGet] = useState(false)
@@ -13,26 +13,26 @@ export default function ReactForm() {
     })
     const [type, setType] = useState('ADD')
     useEffect(() => {
-        axios.get('/api/user-data').then(res => {
-            setPerson(res.data)
-        })
+        const getData = async () => {
+            let data =await ajax('/api/user-data', 'GET')
+            setPerson(data)
+        }
+        getData()
     }, [isGet])
-    function handleAddPerson() {
+    async function handleAddPerson() {
         let data = { ...p, age: +p.age }
         try {
             switch (type) {
                 case 'ADD':
                     {
-                        axios.post('/api/user-add', data).then(res => {
-                            setGet(!isGet)
-                        })
+                        await ajax('/api/user-add', 'POST', data)
+                        setGet(!isGet)
                         break
                     }
                 case 'MOD':
                     {
-                        axios.post('/api/user-mod', data).then(res => {
-                            setGet(!isGet)
-                        })
+                        await ajax('/api/user-mod', 'POST', data)
+                        setGet(!isGet)
                         setType('ADD')
                         break
                     }
@@ -59,10 +59,9 @@ export default function ReactForm() {
         })
         setShow(true)
     }
-    function handleDel(id){
-        axios.get(`/api/user-del?id=${id}`).then(res=>{
-            setPerson(res.data)
-        })
+    async function handleDel(id) {
+        let data=await ajax('/api/user-del','GET',{id})
+        setPerson(data)
     }
     return <>
         <div className="react-form">
@@ -105,7 +104,7 @@ export default function ReactForm() {
                             </td>
                             <td>
                                 <button style={{ width: '30%', marginRight: '5%' }} onClick={() => handleChangeP(person.id)}>修改</button>
-                                <button style={{ width: '30%' }} onClick={()=>handleDel(person.id)}>删除</button>
+                                <button style={{ width: '30%' }} onClick={() => handleDel(person.id)}>删除</button>
                             </td>
                         </tr>
                     )}

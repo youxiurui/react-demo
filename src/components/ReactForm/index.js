@@ -18,7 +18,7 @@ const mapDispatchToProps=dispatch=>({
 })
 
 function ReactForm({data,getPerson,addPerson,modPerson,delPerson}) {
-    console.log({data,getPerson,addPerson,modPerson,delPerson})
+    // console.log({data,getPerson,addPerson,modPerson,delPerson})
     const [isGet, setGet] = useState(false)
     const [isShow, setShow] = useState(false)
     const [persons, setPerson] = useState([])

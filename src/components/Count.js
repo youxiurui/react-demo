@@ -9,16 +9,16 @@ const Count = ({ value, increment, decrement, reset }) => (
     <button onClick={decrement}>-1</button>
     <button onClick={reset}>重置</button>
   </div>
-);
+)
 
 const mapStateToProps = state => ({
-    value: state.count
-  });
+  value: state.count
+})
 
 const mapDispatchToProps = dispatch => ({
   increment: () => dispatch(incrementValue()),
   decrement: () => dispatch(decrementValue()),
   reset: () => dispatch(resetValue())
-});
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(Count);
+export default connect(mapStateToProps, mapDispatchToProps)(Count)

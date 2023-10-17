@@ -1,10 +1,24 @@
 import { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+import {getPerson,addPerson,modPerson,delPerson} from '../../redux/actions'
 import ajax from '../../ajax'
 import Person from './Person'
 import Mark from './Mark'
 import './index.css'
 
-export default function ReactForm() {
+const mapStateToProps=state=>({
+    data:state.data
+})
+
+const mapDispatchToProps=dispatch=>({
+    getPerson:()=>dispatch(getPerson()),
+    addPerson:data=>dispatch(addPerson(data)),
+    modPerson:data=>dispatch(modPerson(data)),
+    delPerson:data=>dispatch(delPerson(data))
+})
+
+function ReactForm({data,getPerson,addPerson,modPerson,delPerson}) {
+    console.log({data,getPerson,addPerson,modPerson,delPerson})
     const [isGet, setGet] = useState(false)
     const [isShow, setShow] = useState(false)
     const [persons, setPerson] = useState([])
@@ -100,3 +114,5 @@ export default function ReactForm() {
         </div>
     </>
 }
+
+export default connect(mapStateToProps,mapDispatchToProps)(ReactForm)

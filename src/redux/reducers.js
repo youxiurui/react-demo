@@ -1,20 +1,44 @@
-// reducers.js
-import { INCREMENT, DECREMENT, RESET } from './actions';
+import {combineReducers } from 'redux'
+import { 
+  INCREMENT, 
+  DECREMENT, 
+  RESET,
+  GETPERSON,
+  ADDPERSON,
+  MODPERSON,
+  DELPERSON
+} from './actions';
 
-const count = 0; // 初始状态
-
-const countReducer = (state = count, action) => {
+const countReducer = (state = 0, action) => {
   switch(action.type) {
     case INCREMENT:
       return state + 1;
     case DECREMENT:
       return state - 1;
     case RESET:
-      return count;
+      return 0;
     default:
       return state;
   }
 }
 
-export default countReducer;
+const personReducers=(state={},action)=>{
+  switch(action.type){
+    case GETPERSON:
+      return action.data
+    case ADDPERSON:
+      return action.data
+    case MODPERSON:
+      return action.data
+    case DELPERSON:
+      return action.data
+    default:
+      return state
+  }
+}
+
+export default combineReducers({
+  countReducer,
+  personReducers
+})
 

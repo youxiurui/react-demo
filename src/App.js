@@ -8,10 +8,10 @@ import ReactForm from './components/ReactForm';
 function App() {
 
   return (
-    // <Provider store={store}>
-    //   <Count />
-    // </Provider>
-    <ReactForm/>
+    <Provider store={store}>
+      {/* <Count /> */}
+      <ReactForm />
+    </Provider>
   );
 }
 

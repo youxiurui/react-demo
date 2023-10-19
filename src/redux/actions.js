@@ -20,48 +20,51 @@ export const resetValue = () => ({
   type: RESET
 })
 
-export const getPerson = async () => {
+export const getPerson = (dispatch) => {
+  return async () => {
+    try {
+      const res = await ajax('/api/user-data');
+      dispatch({
+        type:GETPERSON,
+        data:res
+      })
+      return res
+    } catch (err) {
+      console.log(err);
+    }
+  }
+}
+
+export const addPerson = async data => {
   try {
-    const res=await ajax('/api/user-data')
+    const res = await ajax('/api/user-add', data)
     return {
-      type:GETPERSON,
-      data:res.data
+      type: ADDPERSON,
+      data: res
     }
   } catch (err) {
     console.log(err)
   }
 }
 
-export const addPerson =  async data => {
+export const modPerson = async data => {
   try {
-    const res=await ajax('/api/user-add',data)
+    const res = await ajax('/api/user-mod', data)
     return {
-      type:GETPERSON,
-      data:res.data
+      type: MODPERSON,
+      data: res
     }
   } catch (err) {
     console.log(err)
   }
 }
 
-export const modPerson =  async data => {
+export const delPerson = async data => {
   try {
-    const res=await ajax('/api/user-mod',data)
+    const res = await ajax('/api/user-del', { id: data })
     return {
-      type:GETPERSON,
-      data:res.data
-    }
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-export const delPerson =  async data => {
-  try {
-    const res=await ajax('/api/user-del',{id:data})
-    return {
-      type:GETPERSON,
-      data:res.data
+      type: DELPERSON,
+      data: res
     }
   } catch (err) {
     console.log(err)

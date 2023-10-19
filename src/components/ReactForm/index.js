@@ -1,24 +1,26 @@
 import { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
-import {getPerson,addPerson,modPerson,delPerson} from '../../redux/actions'
+import { connect, useDispatch } from 'react-redux'
+import { getPerson, addPerson, modPerson, delPerson } from '../../redux/actions'
 import ajax from '../../ajax'
 import Person from './Person'
 import Mark from './Mark'
 import './index.css'
 
-const mapStateToProps=state=>({
-    data:state.data
+const mapStateToProps = state => {
+    return ({
+        data: state.reducer.personReducers
+    })
+}
+
+const mapDispatchToProps = dispatch => ({
+    getPerson: () => getPerson(dispatch)(),
+    addPerson: data => dispatch(addPerson(data)),
+    modPerson: data => dispatch(modPerson(data)),
+    delPerson: data => dispatch(delPerson(data))
 })
 
-const mapDispatchToProps=dispatch=>({
-    getPerson:()=>dispatch(getPerson()),
-    addPerson:data=>dispatch(addPerson(data)),
-    modPerson:data=>dispatch(modPerson(data)),
-    delPerson:data=>dispatch(delPerson(data))
-})
-
-function ReactForm({data,getPerson,addPerson,modPerson,delPerson}) {
-    // console.log({data,getPerson,addPerson,modPerson,delPerson})
+function ReactForm({ data, getPerson, addPerson, modPerson, delPerson }) {
+    const [loading, setLoading] = useState(true)
     const [isGet, setGet] = useState(false)
     const [isShow, setShow] = useState(false)
     const [persons, setPerson] = useState([])
@@ -30,11 +32,14 @@ function ReactForm({data,getPerson,addPerson,modPerson,delPerson}) {
     })
     const [type, setType] = useState('ADD')
     useEffect(() => {
-        const getData = async () => {
-            let data = await ajax('/api/user-data', 'GET')
-            setPerson(data)
+        const fetchDataAsync = async () => {
+            setLoading(true)
+            let da=await getPerson()
+            setLoading(false)
+            console.log(da)
+            setPerson(da)
         }
-        getData()
+        fetchDataAsync()
     }, [isGet])
     async function handleAddPerson() {
         let data = { ...p, age: +p.age }
@@ -104,15 +109,17 @@ function ReactForm({data,getPerson,addPerson,modPerson,delPerson}) {
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                    {persons.map((person) =>
-                        <Person person={person} key={person.id} handleChangeP={handleChangeP} handleDel={handleDel} />
-                    )}
-                </tbody>
+                {
+                    loading ? <tbody><tr><td>Loading...</td></tr></tbody> : <tbody>
+                        {persons.map((person) =>
+                            <Person person={person} key={person.id} handleChangeP={handleChangeP} handleDel={handleDel} />
+                        )}
+                    </tbody>
+                }
             </table>
             {isShow && <Mark p={p} handleChangeP={(type, data) => setP({ ...p, [type]: data })} handleIsShow={(falg) => setShow(falg)} handleAddPerson={handleAddPerson} />}
         </div>
     </>
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(ReactForm)
+export default connect(mapStateToProps, mapDispatchToProps)(ReactForm)

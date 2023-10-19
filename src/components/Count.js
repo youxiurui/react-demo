@@ -11,9 +11,11 @@ const Count = ({ value, increment, decrement, reset }) => (
   </div>
 )
 
-const mapStateToProps = state => ({
-  value: state.count
-})
+const mapStateToProps = state => {
+  return {
+    value: state.reducer.countReducer
+  }
+}
 
 const mapDispatchToProps = dispatch => ({
   increment: () => dispatch(incrementValue()),

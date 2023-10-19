@@ -9,7 +9,9 @@ import {
   DELPERSON
 } from './actions';
 
-const countReducer = (state = 0, action) => {
+const initCount=0
+
+const countReducer = (state = initCount, action) => {
   switch(action.type) {
     case INCREMENT:
       return state + 1;
